@@ -6,5 +6,4 @@ namespace Owl\Bundle\RbacManagerBundle\Manager;
 
 interface ManagerInterface
 {
-
 }

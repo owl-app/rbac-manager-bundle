@@ -11,7 +11,7 @@ use Owl\Bundle\RbacManagerBundle\Types\Item;
 use Owl\Bundle\RbacManagerBundle\Types\Role;
 use Owl\Bundle\RbacManagerBundle\Types\Permission;
 use Owl\Bundle\RbacManagerBundle\Types\Assignment;
-use \PDO;
+use PDO;
 
 final class DbalStorage implements StorageInterface
 {
@@ -32,8 +32,8 @@ final class DbalStorage implements StorageInterface
     private array $assigmentsLoaded = [];
 
     private array $castAttributes = [
-        'ruleName' => 'rule_name', 
-        'createdAt' => 'created_time', 
+        'ruleName' => 'rule_name',
+        'createdAt' => 'created_time',
         'updatedAt' => 'updated_time'
     ];
 
@@ -73,9 +73,9 @@ final class DbalStorage implements StorageInterface
         $queryBuilder = $this->connection->createQueryBuilder()
             ->insert($this->itemTable);
 
-        foreach($item->getAttributes() as $name => $value) {
+        foreach ($item->getAttributes() as $name => $value) {
             $queryBuilder->setValue(
-                $this->castAttributes[$name] ?? $name, 
+                $this->castAttributes[$name] ?? $name,
                 $queryBuilder->createNamedParameter($value)
             );
         }
@@ -115,12 +115,12 @@ final class DbalStorage implements StorageInterface
         $queryBuilder->update($this->itemTable, 'i')
             ->where($queryBuilder->expr()->eq('name', $parameterName));
 
-            foreach($item->getAttributes() as $name => $value) {
-                $queryBuilder->set(
-                    'i.'.($this->castAttributes[$name] ?? $name), 
-                    $queryBuilder->createNamedParameter($value)
-                );
-            }
+        foreach ($item->getAttributes() as $name => $value) {
+            $queryBuilder->set(
+                'i.'.($this->castAttributes[$name] ?? $name),
+                $queryBuilder->createNamedParameter($value)
+            );
+        }
 
         $queryBuilder->execute();
     }
@@ -203,9 +203,9 @@ final class DbalStorage implements StorageInterface
         $this->getNotLoadedItems($types);
         $items = [];
 
-        foreach($types as $type) {
-            if(isset($this->itemsLoaded[$type])) {
-                foreach($this->itemsLoaded[$type] as $item) {
+        foreach ($types as $type) {
+            if (isset($this->itemsLoaded[$type])) {
+                foreach ($this->itemsLoaded[$type] as $item) {
                     $items[$item['name']] = $this->getInstanceFromAttributes($item);
                 }
             }
@@ -216,24 +216,24 @@ final class DbalStorage implements StorageInterface
 
     private function getItemFromLoaded(string $name)
     {
-        foreach($this->itemsLoaded as $type => $items) {
-            if(isset($items[$name])) {
+        foreach ($this->itemsLoaded as $type => $items) {
+            if (isset($items[$name])) {
                 return $this->getInstanceFromAttributes($items[$name]);
             }
-        } 
+        }
     }
 
     private function getNotLoadedItems(array $types): void
     {
         $notLoadedTypes = [];
         if ($types) {
-            foreach($types as $type) {
-                if(!isset($this->itemsLoaded[$type])) {
+            foreach ($types as $type) {
+                if (!isset($this->itemsLoaded[$type])) {
                     $notLoadedTypes[] = $type;
                 }
             }
         }
-        if($notLoadedTypes) {
+        if ($notLoadedTypes) {
             $this->loadItems($notLoadedTypes);
         }
     }
@@ -246,7 +246,7 @@ final class DbalStorage implements StorageInterface
             ->from($this->itemTable)
             ->where(
                 $queryBuilder->expr()->in(
-                    'type', 
+                    'type',
                     $queryBuilder->createNamedParameter((array) $types, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
                 )
             )
@@ -292,7 +292,7 @@ final class DbalStorage implements StorageInterface
                 ->execute();
             $this->clearQueryBuilder($queryBuilder);
         }
-    
+
         $queryBuilder->delete($this->itemTable)
             ->where($queryBuilder->expr()->in('type', $parameterType))
             ->execute();
@@ -312,15 +312,16 @@ final class DbalStorage implements StorageInterface
 
     private function clearQueryBuilder(QueryBuilder $queryBuilder, bool $clearParameters = false): void
     {
-        if($clearParameters)
+        if ($clearParameters) {
             $queryBuilder->setParameters([]);
+        }
 
         $queryBuilder->resetQueryParts();
     }
 
     public function getChildren(): array
     {
-        if(is_null($this->children)) {
+        if (is_null($this->children)) {
             $this->loadChildrens();
         }
 
@@ -428,19 +429,20 @@ final class DbalStorage implements StorageInterface
 
     public function getUserAssignments(int $userId): array
     {
-        if(!isset($this->assigmentsLoaded[$userId])) {
+        if (!isset($this->assigmentsLoaded[$userId])) {
             $queryBuilder = $this->connection->createQueryBuilder();
             $stmt = $queryBuilder
                 ->select('at.item_id, ai.name')
                 ->from($this->assignmentTable, 'at')
                 ->leftJoin('at', $this->itemTable, 'ai', 'at.item_id = ai.id')
-                ->where($queryBuilder->expr()->eq(
-                        'user_id', 
-                        $queryBuilder->createNamedParameter($userId)
-                    )
+                ->where(
+                    $queryBuilder->expr()->eq(
+                    'user_id',
+                    $queryBuilder->createNamedParameter($userId)
+                )
                 )
                 ->execute();
-    
+
             $rows = $stmt->fetchAll();
 
             if ($rows) {
@@ -494,7 +496,7 @@ final class DbalStorage implements StorageInterface
                 )
             )
             ->execute();
-        
+
         unset($this->assigmentsLoaded[$userId][$assigment->getItemName()]);
     }
 

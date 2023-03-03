@@ -174,7 +174,7 @@ final class Manager implements ManagerInterface
         }
 
         // if ($this->storage->getUserAssignmentByName($userId, $item->getName()) !== null) {
-        if (in_array($item->getName(), array_keys($this->getPermissionsByUser($userId)))) {            
+        if (in_array($item->getName(), array_keys($this->getPermissionsByUser($userId)))) {
             throw new InvalidArgumentException(
                 sprintf('"%s" %s has already been assigned to user %s.', $item->getName(), $item->getType(), $userId)
             );
@@ -291,9 +291,9 @@ final class Manager implements ManagerInterface
         $direct = $this->getDirectPermissionsByUser($userId);
         $inherited = $this->getInheritedPermissionsByUser($userId);
 
-        if($group) {
+        if ($group) {
             return [$direct, $inherited];
-        }else {
+        } else {
             return array_merge($direct, $inherited);
         }
     }

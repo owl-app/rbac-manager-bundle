@@ -14,7 +14,7 @@ abstract class Item
      */
     private string $name;
 
-        /**
+    /**
      * @var string The path for permission
      */
     private string $path;

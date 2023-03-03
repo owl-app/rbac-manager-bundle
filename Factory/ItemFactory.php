@@ -16,13 +16,13 @@ final class ItemFactory implements ItemFactoryInterface
         switch($type) {
             case Item::TYPE_PERMISSION:
                 $class = Permission::class;
-            break;
+                break;
             case Item::TYPE_ROLE:
                 $class = Role::class;
-            break;
+                break;
             default:
                 throw new RuntimeException('Invalid type % ', $type);
-            break;
+                break;
         }
 
         return new $class($name);
