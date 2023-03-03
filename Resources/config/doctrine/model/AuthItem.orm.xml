@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <entity name="Owl\Component\Rbac\Model\AuthItem" inheritance-type="SINGLE_TABLE">
+
+        <discriminator-column name="type" type="string" />
+        <discriminator-map>
+            <discriminator-mapping value="permission" class="Owl\Component\Rbac\Model\Permission" />
+            <discriminator-mapping value="role" class="Owl\Component\Rbac\Model\Role" />
+        </discriminator-map>
+
+    </entity>
+
+</doctrine-mapping>

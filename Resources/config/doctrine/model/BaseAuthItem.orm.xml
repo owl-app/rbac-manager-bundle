@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="Owl\Component\Rbac\Model\BaseAuthItem" table="owl_auth_item">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+        <field name="name" column="name" type="string" length="255" nullable="false" />
+        <field name="groupPermission" column="group_permission" type="string" length="255" nullable="true" />
+        <field name="description" column="description" type="text" nullable="true" />
+
+        <field name="createdAt" column="created_at" type="datetime" nullable="true">
+            <gedmo:timestampable on="create" />
+        </field>
+        <field name="updatedAt" column="updated_at" type="datetime" nullable="true">
+            <gedmo:timestampable on="update" />
+        </field>
+
+    </mapped-superclass>
+
+</doctrine-mapping>

@@ -1,0 +1,44 @@
+{
+    "name": "owl/rbac-manager-bundle",
+    "type": "symfony-bundle",
+    "description": "RBAC Manager for Symfony applications.",
+    "keywords": [
+        "rbac",
+        "permission",
+        "owl"
+    ],
+    "authors": [
+        {
+            "name": "Paweł Kęska",
+            "email": "projekty@pawelkeska.eu"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "stof/doctrine-extensions-bundle": "^1.7",
+        "symfony/framework-bundle": "^5.4"
+    },
+    "require-dev": {
+        "doctrine/orm": "^2.8",
+        "symfony/dependency-injection": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Owl\\Bundle\\RbacManagerBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        },
+        "classmap": [
+        ]
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../*/*"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

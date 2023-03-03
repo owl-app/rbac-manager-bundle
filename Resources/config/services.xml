@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="owl_rbac_manager.item_table">auth_item</parameter>
+        <parameter key="owl_rbac_manager.item_child_table">auth_item_child</parameter>
+        <parameter key="owl_rbac_manager.assignment_table">auth_assignment</parameter>
+        <parameter key="owl_rbac_manager.rule_table">auth_rule</parameter>
+    </parameters>
+
+    <services>
+        <!-- Manager -->
+
+        <service id="owl_rbac.manager" class="Owl\Bundle\RbacManagerBundle\Manager\Manager">
+            <argument type="service" id="owl_rbac.manager.storage" />
+        </service>
+
+        <service id="Owl\Bundle\RbacManagerBundle\Manager\ManagerInterface" alias="owl_rbac.manager" public="true" />
+
+        <!-- Storage manager -->
+
+        <service id="owl_rbac.manager.storage" class="Owl\Bundle\RbacManagerBundle\Storage\Doctrine\DbalStorage">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+            <argument>%owl_rbac_manager.item_table%</argument>
+            <argument>%owl_rbac_manager.item_child_table%</argument>
+            <argument>%owl_rbac_manager.assignment_table%</argument>
+            <argument>%owl_rbac_manager.rule_table%</argument>
+        </service>
+
+        <!-- Factory Item -->
+
+        <service id="owl_rbac.item_manager_factory" class="Owl\Bundle\RbacManagerBundle\Factory\ItemFactory" />
+
+        <service id="Owl\Bundle\RbacManagerBundle\Factory\ItemFactoryInterface" alias="owl_rbac.item_manager_factory" />
+
+    </services>
+</container>
