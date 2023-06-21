@@ -447,7 +447,7 @@ final class DbalStorage implements StorageInterface
 
             if ($rows) {
                 foreach ($rows as $row) {
-                    $this->assigmentsLoaded[$userId][$row['name']] = new Assignment((string) $userId, $row['item_id'], $row['name']);
+                    $this->assigmentsLoaded[$userId][$row['name']] = new Assignment((string) $userId, (string) $row['item_id'], $row['name']);
                 }
             } else {
                 $this->assigmentsLoaded[$userId] = [];
