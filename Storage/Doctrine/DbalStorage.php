@@ -481,7 +481,7 @@ final class DbalStorage implements StorageInterface
             ->setParameter(1, $userId)
             ->execute();
 
-        $this->assigmentsLoaded[$userId][$item['name']] = new Assignment((string) $userId, $item['id'], $item['name']);
+        $this->assigmentsLoaded[$userId][$item['name']] = new Assignment((string) $userId, (string) $item['id'], $item['name']);
     }
 
     public function removeAssignment(int $userId, Assignment $assigment): void
