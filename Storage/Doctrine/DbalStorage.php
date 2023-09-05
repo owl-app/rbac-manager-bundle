@@ -178,7 +178,7 @@ final class DbalStorage implements StorageInterface
         return $this->getItemByType(Item::TYPE_PERMISSION, $name) ?? null;
     }
 
-    private function supportsCascadeUpdate()
+    private function supportsCascadeUpdate(): bool
     {
         return $this->connection->getDriver()->getName() != 'pdo_sqlite';
     }
@@ -188,7 +188,12 @@ final class DbalStorage implements StorageInterface
         $this->removeAllItems(Item::TYPE_PERMISSION);
     }
 
-    private function getItemByType($type, $name)
+    /**
+     * @psalm-param 'permission'|'role' $type
+     *
+     * @return Item|null
+     */
+    private function getItemByType(string $type, string $name)
     {
         $this->getNotLoadedItems([$type]);
 
@@ -197,7 +202,16 @@ final class DbalStorage implements StorageInterface
         }
     }
 
-    private function getItemsByTypes($types): array
+    /**
+     * @param string|string[] $types
+     *
+     * @psalm-param 'permission'|'role'|list{'role', 'permission'} $types
+     *
+     * @return Item[]
+     *
+     * @psalm-return array<Item>
+     */
+    private function getItemsByTypes(array|string $types): array
     {
         $types = (array) $types;
         $this->getNotLoadedItems($types);
@@ -214,6 +228,9 @@ final class DbalStorage implements StorageInterface
         return $items;
     }
 
+    /**
+     * @return Item|null
+     */
     private function getItemFromLoaded(string $name)
     {
         foreach ($this->itemsLoaded as $type => $items) {
@@ -238,7 +255,10 @@ final class DbalStorage implements StorageInterface
         }
     }
 
-    private function loadItems($types): void
+    /**
+     * @psalm-param non-empty-list<mixed> $types
+     */
+    private function loadItems(array $types): void
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $stmt = $queryBuilder
@@ -298,7 +318,7 @@ final class DbalStorage implements StorageInterface
             ->execute();
     }
 
-    private function getInstanceByTypeAndName(string $type, string $name): Item
+    private function getInstanceByTypeAndName(string $type, string $name): Permission|Role
     {
         return $type === Item::TYPE_PERMISSION ? new Permission($name) : new Role($name);
     }
@@ -319,7 +339,7 @@ final class DbalStorage implements StorageInterface
         $queryBuilder->resetQueryParts();
     }
 
-    public function getChildren(): array
+    public function getChildren():? array
     {
         if (is_null($this->children)) {
             $this->loadChildrens();
@@ -387,6 +407,11 @@ final class DbalStorage implements StorageInterface
             ->execute();
     }
 
+    /**
+     * @return array[]
+     *
+     * @psalm-return array<array>
+     */
     private function loadChildrens(): array
     {
         $items = $this->getItemsById();
@@ -407,6 +432,11 @@ final class DbalStorage implements StorageInterface
         return $this->children = $children;
     }
 
+    /**
+     * @return Item[]
+     *
+     * @psalm-return array<Item>
+     */
     private function getItemsById(): array
     {
         $items = [];

@@ -46,7 +46,7 @@ abstract class Item
         return $this->name;
     }
 
-    public function withName(string $name): self
+    public function withName(string $name): static
     {
         $new = clone $this;
         $new->name = $name;
@@ -58,14 +58,14 @@ abstract class Item
         return $this->path;
     }
 
-    public function withPath(string $path): self
+    public function withPath(string $path): static
     {
         $new = clone $this;
         $new->path = $path;
         return $new;
     }
 
-    public function withDescription(string $description): self
+    public function withDescription(string $description): static
     {
         $new = clone $this;
         $new->description = $description;
@@ -77,26 +77,26 @@ abstract class Item
         return $this->description;
     }
 
-    public function withCreatedTime(string $createdTime = null): self
+    public function withCreatedTime(string $createdTime = null): static
     {
         $new = clone $this;
         $new->createdTime = $createdTime;
         return $new;
     }
 
-    public function getCreatedTime(): ?string
+    public function getCreatedTime(): int|null
     {
         return $this->createdTime;
     }
 
-    public function withUpdatedTime(string $updatedTime = null): self
+    public function withUpdatedTime(string $updatedTime = null): static
     {
         $new = clone $this;
         $new->updatedTime = $updatedTime;
         return $new;
     }
 
-    public function getUpdatedTime(): ?string
+    public function getUpdatedTime(): int|null
     {
         return $this->updatedTime;
     }
@@ -111,6 +111,11 @@ abstract class Item
         return $this->updatedTime !== null;
     }
 
+    /**
+     * @return (null|string)[]
+     *
+     * @psalm-return array{name: string, description: string, type: string, updated_time: null|string, created_time: null|string}
+     */
     public function getAttributes(): array
     {
         return [

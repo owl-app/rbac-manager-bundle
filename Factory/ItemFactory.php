@@ -11,6 +11,9 @@ use RuntimeException;
 
 final class ItemFactory implements ItemFactoryInterface
 {
+    /**
+     * @return Permission|Role
+     */
     public function create(string $type, string $name): object
     {
         switch($type) {

@@ -27,7 +27,7 @@ final class Manager implements ManagerInterface
         $this->storage = $storage;
     }
 
-    public function getStorage()
+    public function getStorage(): StorageInterface
     {
         return $this->storage;
     }
@@ -161,7 +161,7 @@ final class Manager implements ManagerInterface
      * Assigns a role or permission to a user.
      *
      * @param Item $item
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      *
      * @throws \Exception If the role has already been assigned to the user.
      *
@@ -189,7 +189,7 @@ final class Manager implements ManagerInterface
      * Revokes a role or a permission from a user.
      *
      * @param Item $role
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      */
     public function revoke(Item $item, int $userId): void
     {
@@ -209,7 +209,7 @@ final class Manager implements ManagerInterface
     /**
      * Revokes all roles and permissions from a user.
      *
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      */
     public function revokeAll(int $userId): void
     {
@@ -220,7 +220,7 @@ final class Manager implements ManagerInterface
      * Returns the roles that are assigned to the user via {@see assign()}.
      * Note that child roles that are not assigned directly to the user will not be returned.
      *
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      *
      * @return Role[] All roles directly assigned to the user. The array is indexed by the role names.
      */
@@ -282,9 +282,11 @@ final class Manager implements ManagerInterface
     /**
      * Returns all permissions that the user has.
      *
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      *
-     * @return Permission[] All permissions that the user has. The array is indexed by the permission names.
+     * @return (Permission|Permission[])[] All permissions that the user has. The array is indexed by the permission names.
+     *
+     * @psalm-return array<Permission|array<Permission>>
      */
     public function getPermissionsByUser(int $userId, bool $group = false): array
     {
@@ -303,7 +305,9 @@ final class Manager implements ManagerInterface
      *
      * @param string $roleName
      *
-     * @return array Array of user ID strings.
+     * @return (int|string)[] Array of user ID strings.
+     *
+     * @psalm-return list<array-key>
      */
     public function getUserIdsByRole(string $roleName): array
     {
@@ -421,6 +425,8 @@ final class Manager implements ManagerInterface
      * Returns defaultRoles as array of Role objects.
      *
      * @return Role[] Default roles. The array is indexed by the role names.
+     *
+     * @psalm-return array<string, Role>
      */
     public function getDefaultRoleInstances(): array
     {
@@ -466,6 +472,11 @@ final class Manager implements ManagerInterface
         return $this->storage->getItemByName($name) !== null;
     }
 
+    /**
+     * @return Permission[]
+     *
+     * @psalm-return array<Permission>
+     */
     private function normalizePermissions(array $permissions): array
     {
         $normalizePermissions = [];
@@ -482,7 +493,7 @@ final class Manager implements ManagerInterface
     /**
      * Returns all permissions that are directly assigned to user.
      *
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      *
      * @return Permission[] All direct permissions that the user has. The array is indexed by the permission names.
      */
@@ -502,7 +513,7 @@ final class Manager implements ManagerInterface
     /**
      * Returns all permissions that the user inherits from the roles assigned to him.
      *
-     * @param string $userId The user ID.
+     * @param int $userId The user ID.
      *
      * @return Permission[] All inherited permissions that the user has. The array is indexed by the permission names.
      */

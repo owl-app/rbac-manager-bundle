@@ -21,7 +21,7 @@ interface StorageInterface
 
     public function removeItem(Item $item): void;
 
-    public function getChildren(): array;
+    public function getChildren():? array;
 
     public function getRoles(): array;
 
