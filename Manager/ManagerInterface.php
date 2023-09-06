@@ -16,6 +16,8 @@ interface ManagerInterface
 {
     public function assign(Item $item, int $userId): ?Assignment;
 
+    public function revoke(Item $item, int $userId): void;
+
     public function getRolesByUser(int $userId): array;
 
     public function getPermissionsByUser(int $userId, bool $group = false): array;
