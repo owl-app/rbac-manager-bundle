@@ -24,7 +24,7 @@ class Assignment
     private string $itemName;
 
     /**
-     * @var int UNIX timestamp representing the assignment creation time.
+     * @var string|null UNIX timestamp representing the assignment creation time.
      */
     private ?string $createdAt;
 
@@ -63,7 +63,7 @@ class Assignment
         return $new;
     }
 
-    public function getCreatedAt(): int|null
+    public function getCreatedAt():? string
     {
         return $this->createdAt;
     }
