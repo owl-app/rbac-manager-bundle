@@ -267,12 +267,13 @@ final class DbalStorage implements StorageInterface
             ->where(
                 $queryBuilder->expr()->in(
                     'type',
-                    $queryBuilder->createNamedParameter((array) $types, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
+                    /** @psalm-suppress RedundantCast */
+                    $queryBuilder->createNamedParameter($types, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
                 )
             )
             ->execute();
 
-        $rows = $stmt->fetchAll();
+        $rows = $stmt->fetchAllAssociative();
 
         if ($rows) {
             foreach ($rows as $row) {
@@ -421,7 +422,7 @@ final class DbalStorage implements StorageInterface
             ->from($this->itemChildTable)
             ->execute();
 
-        $rows = $stmt->fetchAll();
+        $rows = $stmt->fetchAllAssociative();
 
         if ($rows) {
             foreach ($rows as $row) {
@@ -446,7 +447,7 @@ final class DbalStorage implements StorageInterface
             ->from($this->itemTable)
             ->execute();
 
-        $rows = $stmt->fetchAll();
+        $rows = $stmt->fetchAllAssociative();
 
         if ($rows) {
             foreach ($rows as $row) {
@@ -473,7 +474,7 @@ final class DbalStorage implements StorageInterface
                 )
                 ->execute();
 
-            $rows = $stmt->fetchAll();
+            $rows = $stmt->fetchAllAssociative();
 
             if ($rows) {
                 foreach ($rows as $row) {
