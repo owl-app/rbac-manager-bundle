@@ -25,14 +25,14 @@ abstract class Item
     private string $description = '';
 
     /**
-     * @var int|null date time representing the item creation time.
+     * @var string|null date time representing the item creation time.
      */
-    private ?int $createdTime = null;
+    private ?string $createdTime = null;
 
     /**
-     * @var int|null date time representing the item updating time.
+     * @var string|null date time representing the item updating time.
      */
-    private ?int $updatedTime = null;
+    private ?string $updatedTime = null;
 
     public function __construct(string $name)
     {
@@ -84,7 +84,7 @@ abstract class Item
         return $new;
     }
 
-    public function getCreatedTime(): int|null
+    public function getCreatedTime(): string|null
     {
         return $this->createdTime;
     }
@@ -96,7 +96,7 @@ abstract class Item
         return $new;
     }
 
-    public function getUpdatedTime(): int|null
+    public function getUpdatedTime(): string|null
     {
         return $this->updatedTime;
     }

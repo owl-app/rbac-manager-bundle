@@ -56,7 +56,7 @@ class Assignment
         return $this->itemName;
     }
 
-    public function withItemId(int $id): static
+    public function withItemId(string $id): static
     {
         $new = clone $this;
         $new->itemId = $id;

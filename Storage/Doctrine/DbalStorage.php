@@ -12,6 +12,7 @@ use Owl\Bundle\RbacManagerBundle\Types\Role;
 use Owl\Bundle\RbacManagerBundle\Types\Permission;
 use Owl\Bundle\RbacManagerBundle\Types\Assignment;
 use PDO;
+use Doctrine\DBAL\Driver;
 
 final class DbalStorage implements StorageInterface
 {
@@ -110,7 +111,7 @@ final class DbalStorage implements StorageInterface
             $this->clearQueryBuilder($queryBuilder);
         }
 
-        $item = $item->withUpdatedTime(time());
+        $item = $item->withUpdatedTime((string) time());
 
         $queryBuilder->update($this->itemTable, 'i')
             ->where($queryBuilder->expr()->eq('name', $parameterName));
@@ -180,7 +181,7 @@ final class DbalStorage implements StorageInterface
 
     private function supportsCascadeUpdate(): bool
     {
-        return $this->connection->getDriver()->getName() != 'pdo_sqlite';
+        return !$this->connection->getDriver() instanceof Driver\PDO\SQLite\Driver;
     }
 
     public function clearPermissions(): void
@@ -295,7 +296,7 @@ final class DbalStorage implements StorageInterface
                 ->execute();
             $this->clearQueryBuilder($queryBuilder);
 
-            $names = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $names = $stmt->fetchFirstColumn();
 
             if (empty($names)) {
                 return;
@@ -490,7 +491,7 @@ final class DbalStorage implements StorageInterface
 
     public function getAssignments(): array
     {
-        return $this->assignments;
+        return $this->assigmentsLoaded;
     }
 
     public function getUserAssignmentByName(int $userId, string $name): ?Assignment

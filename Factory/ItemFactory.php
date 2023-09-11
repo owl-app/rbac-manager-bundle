@@ -24,7 +24,7 @@ final class ItemFactory implements ItemFactoryInterface
                 $class = Role::class;
                 break;
             default:
-                throw new RuntimeException('Invalid type % ', $type);
+                throw new RuntimeException(\sprintf('Invalid type %s', $type));
                 break;
         }
 

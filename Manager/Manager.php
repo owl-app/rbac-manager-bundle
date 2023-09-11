@@ -39,7 +39,7 @@ final class Manager implements ManagerInterface
         }
 
         $userId = (string) $userId;
-        $assignments = $this->storage->getUserAssignments($userId);
+        $assignments = $this->storage->getUserAssignments((int) $userId);
 
         if (empty($assignments) && empty($this->defaultRoles)) {
             return false;
@@ -197,12 +197,7 @@ final class Manager implements ManagerInterface
         if ($assigment !== null) {
             $this->storage->removeAssignment($userId, $assigment);
         } else {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'This permission is assign to role',
-                    // $item->getName()
-                )
-            );
+            throw new InvalidArgumentException('This permission is assign to role');
         }
     }
 
@@ -441,11 +436,11 @@ final class Manager implements ManagerInterface
     private function addItem(Item $item): void
     {
         $time = time();
-        if (!$item->hasCreatedAt()) {
-            $item = $item->withCreatedAt($time);
+        if (!$item->hasCreatedTime()) {
+            $item = $item->withUpdatedTime((string) $time);
         }
-        if (!$item->hasUpdatedAt()) {
-            $item = $item->withUpdatedAt($time);
+        if (!$item->hasUpdatedTime()) {
+            $item = $item->withUpdatedTime((string) $time);
         }
 
         $this->storage->addItem($item);
