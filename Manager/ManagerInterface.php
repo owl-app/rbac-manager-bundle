@@ -21,4 +21,6 @@ interface ManagerInterface
     public function getRolesByUser(int $userId): array;
 
     public function getPermissionsByUser(int $userId, bool $group = false): array;
+
+    public function getPermissionsByRole(string $roleName): array;
 }
