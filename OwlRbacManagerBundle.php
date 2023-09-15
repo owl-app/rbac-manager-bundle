@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Owl\Bundle\RbacManagerBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class OwlRbacManagerBundle extends Bundle
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function build(ContainerBuilder $container)
     {
@@ -19,7 +21,7 @@ final class OwlRbacManagerBundle extends Bundle
         $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver(
             [$this->getConfigFilesPath() => $this->getModelNamespace()],
             ['owl_rbac_manager.entity_manager'],
-            false
+            false,
         ));
     }
 
@@ -28,7 +30,7 @@ final class OwlRbacManagerBundle extends Bundle
         return sprintf(
             '%s/Resources/config/doctrine/%s',
             $this->getPath(),
-            strtolower($this->getDoctrineMappingDirectory())
+            strtolower($this->getDoctrineMappingDirectory()),
         );
     }
 

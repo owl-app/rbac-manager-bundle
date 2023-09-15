@@ -7,8 +7,6 @@ namespace Owl\Bundle\RbacManagerBundle\Types;
 final class Role extends Item
 {
     /**
-     * @return string
-     *
      * @psalm-return 'role'
      */
     public function getType(): string

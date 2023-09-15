@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Owl\Bundle\RbacManagerBundle\Manager;
 
-use InvalidArgumentException;
-use Owl\Bundle\RbacManagerBundle\Storage\StorageInterface;
 use Owl\Bundle\RbacManagerBundle\Types\Assignment;
 use Owl\Bundle\RbacManagerBundle\Types\Item;
-use Owl\Bundle\RbacManagerBundle\Types\Role;
-use Owl\Bundle\RbacManagerBundle\Types\Permission;
-use RuntimeException;
 
 interface ManagerInterface
 {

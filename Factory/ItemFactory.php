@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Owl\Bundle\RbacManagerBundle\Factory;
 
 use Owl\Bundle\RbacManagerBundle\Types\Item;
-use Owl\Bundle\RbacManagerBundle\Types\Role;
 use Owl\Bundle\RbacManagerBundle\Types\Permission;
+use Owl\Bundle\RbacManagerBundle\Types\Role;
 use RuntimeException;
 
 final class ItemFactory implements ItemFactoryInterface
@@ -19,12 +19,15 @@ final class ItemFactory implements ItemFactoryInterface
         switch($type) {
             case Item::TYPE_PERMISSION:
                 $class = Permission::class;
+
                 break;
             case Item::TYPE_ROLE:
                 $class = Role::class;
+
                 break;
             default:
                 throw new RuntimeException(\sprintf('Invalid type %s', $type));
+
                 break;
         }
 

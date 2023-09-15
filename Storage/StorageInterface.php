@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Owl\Bundle\RbacManagerBundle\Storage;
 
-use Owl\Bundle\RbacManagerBundle\Types\Item;
-use Owl\Bundle\RbacManagerBundle\Types\Role;
-use Owl\Bundle\RbacManagerBundle\Types\Permission;
 use Owl\Bundle\RbacManagerBundle\Types\Assignment;
+use Owl\Bundle\RbacManagerBundle\Types\Item;
+use Owl\Bundle\RbacManagerBundle\Types\Permission;
+use Owl\Bundle\RbacManagerBundle\Types\Role;
 
 interface StorageInterface
 {
@@ -21,7 +21,7 @@ interface StorageInterface
 
     public function removeItem(Item $item): void;
 
-    public function getChildren():? array;
+    public function getChildren(): ? array;
 
     public function getRoles(): array;
 

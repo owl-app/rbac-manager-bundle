@@ -7,31 +7,22 @@ namespace Owl\Bundle\RbacManagerBundle\Types;
 abstract class Item
 {
     public const TYPE_ROLE = 'role';
+
     public const TYPE_PERMISSION = 'permission';
 
-    /**
-     * @var string The name of the item. This must be globally unique.
-     */
+    /** @var string The name of the item. This must be globally unique. */
     private string $name;
 
-    /**
-     * @var string The path for permission
-     */
+    /** @var string The path for permission */
     private string $path;
 
-    /**
-     * @var string The item description.
-     */
+    /** @var string The item description. */
     private string $description = '';
 
-    /**
-     * @var string|null date time representing the item creation time.
-     */
+    /** @var string|null date time representing the item creation time. */
     private ?string $createdTime = null;
 
-    /**
-     * @var string|null date time representing the item updating time.
-     */
+    /** @var string|null date time representing the item updating time. */
     private ?string $updatedTime = null;
 
     public function __construct(string $name)
@@ -50,6 +41,7 @@ abstract class Item
     {
         $new = clone $this;
         $new->name = $name;
+
         return $new;
     }
 
@@ -62,6 +54,7 @@ abstract class Item
     {
         $new = clone $this;
         $new->path = $path;
+
         return $new;
     }
 
@@ -69,6 +62,7 @@ abstract class Item
     {
         $new = clone $this;
         $new->description = $description;
+
         return $new;
     }
 
@@ -81,6 +75,7 @@ abstract class Item
     {
         $new = clone $this;
         $new->createdTime = $createdTime;
+
         return $new;
     }
 
@@ -93,6 +88,7 @@ abstract class Item
     {
         $new = clone $this;
         $new->updatedTime = $updatedTime;
+
         return $new;
     }
 
@@ -112,7 +108,7 @@ abstract class Item
     }
 
     /**
-     * @return (null|string)[]
+     * @return (string|null)[]
      *
      * @psalm-return array{name: string, description: string, type: string, updated_time: null|string, created_time: null|string}
      */

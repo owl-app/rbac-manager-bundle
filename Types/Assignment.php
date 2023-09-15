@@ -9,29 +9,22 @@ namespace Owl\Bundle\RbacManagerBundle\Types;
  */
 class Assignment
 {
-    /**
-     * @var string The user ID. This should be a int representing the unique identifier of a user.
-     */
+    /** @var string The user ID. This should be a int representing the unique identifier of a user. */
     private string $userId;
-    /**
-     * @var string The role or permission id.
-     */
+
+    /** @var string The role or permission id. */
     private string $itemId;
 
-    /**
-     * @var string The user ID. This should be a string representing the unique identifier of a user.
-     */
+    /** @var string The user ID. This should be a string representing the unique identifier of a user. */
     private string $itemName;
 
-    /**
-     * @var string|null UNIX timestamp representing the assignment creation time.
-     */
+    /** @var string|null UNIX timestamp representing the assignment creation time. */
     private ?string $createdAt;
 
     /**
      * @param string $userId The user ID. This should be a string representing the unique identifier of a user.
      * @param string $itemId The role or permission id.
-     * @param null|string $createdAt UNIX timestamp representing the assignment creation time.
+     * @param string|null $createdAt UNIX timestamp representing the assignment creation time.
      */
     public function __construct(string $userId, string $itemId, string $itemName, string $createdAt = null)
     {
@@ -60,10 +53,11 @@ class Assignment
     {
         $new = clone $this;
         $new->itemId = $id;
+
         return $new;
     }
 
-    public function getCreatedAt():? string
+    public function getCreatedAt(): ? string
     {
         return $this->createdAt;
     }

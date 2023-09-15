@@ -8,8 +8,8 @@ use InvalidArgumentException;
 use Owl\Bundle\RbacManagerBundle\Storage\StorageInterface;
 use Owl\Bundle\RbacManagerBundle\Types\Assignment;
 use Owl\Bundle\RbacManagerBundle\Types\Item;
-use Owl\Bundle\RbacManagerBundle\Types\Role;
 use Owl\Bundle\RbacManagerBundle\Types\Permission;
+use Owl\Bundle\RbacManagerBundle\Types\Role;
 use RuntimeException;
 
 final class Manager implements ManagerInterface
@@ -68,8 +68,6 @@ final class Manager implements ManagerInterface
     /**
      * Adds an item as a child of another item.
      *
-     * @param Item $parent
-     * @param Item $child
      *
      * @throws RuntimeException
      * @throws InvalidArgumentException
@@ -78,13 +76,13 @@ final class Manager implements ManagerInterface
     {
         if (!$this->hasItem($parent->getName())) {
             throw new InvalidArgumentException(
-                sprintf('Either "%s" does not exist.', $parent->getName())
+                sprintf('Either "%s" does not exist.', $parent->getName()),
             );
         }
 
         if (!$this->hasItem($child->getName())) {
             throw new InvalidArgumentException(
-                sprintf('Either "%s" does not exist.', $child->getName())
+                sprintf('Either "%s" does not exist.', $child->getName()),
             );
         }
 
@@ -94,7 +92,7 @@ final class Manager implements ManagerInterface
 
         if (!$this->canBeParent($parent, $child)) {
             throw new InvalidArgumentException(
-                sprintf('Can not add "%s" role as a child of "%s" permission.', $child->getName(), $parent->getName())
+                sprintf('Can not add "%s" role as a child of "%s" permission.', $child->getName(), $parent->getName()),
             );
         }
 
@@ -103,14 +101,14 @@ final class Manager implements ManagerInterface
                 sprintf(
                     'Cannot add "%s" as a child of "%s". A loop has been detected.',
                     $child->getName(),
-                    $parent->getName()
-                )
+                    $parent->getName(),
+                ),
             );
         }
 
         if (isset($this->storage->getChildrenByName($parent->getName())[$child->getName()])) {
             throw new RuntimeException(
-                sprintf('The item "%s" already has a child "%s".', $parent->getName(), $child->getName())
+                sprintf('The item "%s" already has a child "%s".', $parent->getName(), $child->getName()),
             );
         }
 
@@ -120,9 +118,6 @@ final class Manager implements ManagerInterface
     /**
      * Removes a child from its parent.
      * Note, the child item is not deleted. Only the parent-child relationship is removed.
-     *
-     * @param Item $parent
-     * @param Item $child
      */
     public function removeChild(Item $parent, Item $child): void
     {
@@ -134,8 +129,6 @@ final class Manager implements ManagerInterface
     /**
      * Removed all children form their parent.
      * Note, the children items are not deleted. Only the parent-child relationships are removed.
-     *
-     * @param Item $parent
      */
     public function removeChildren(Item $parent): void
     {
@@ -147,8 +140,6 @@ final class Manager implements ManagerInterface
     /**
      * Returns a value indicating whether the child already exists for the parent.
      *
-     * @param Item $parent
-     * @param Item $child
      *
      * @return bool Whether `$child` is already a child of `$parent`
      */
@@ -160,7 +151,6 @@ final class Manager implements ManagerInterface
     /**
      * Assigns a role or permission to a user.
      *
-     * @param Item $item
      * @param int $userId The user ID.
      *
      * @throws \Exception If the role has already been assigned to the user.
@@ -176,7 +166,7 @@ final class Manager implements ManagerInterface
         // if ($this->storage->getUserAssignmentByName($userId, $item->getName()) !== null) {
         if (in_array($item->getName(), array_keys($this->getPermissionsByUser($userId)))) {
             throw new InvalidArgumentException(
-                sprintf('"%s" %s has already been assigned to user %s.', $item->getName(), $item->getType(), $userId)
+                sprintf('"%s" %s has already been assigned to user %s.', $item->getName(), $item->getType(), $userId),
             );
         }
 
@@ -188,7 +178,6 @@ final class Manager implements ManagerInterface
     /**
      * Revokes a role or a permission from a user.
      *
-     * @param Item $role
      * @param int $userId The user ID.
      */
     public function revoke(Item $item, int $userId): void
@@ -290,15 +279,14 @@ final class Manager implements ManagerInterface
 
         if ($group) {
             return [$direct, $inherited];
-        } else {
-            return array_merge($direct, $inherited);
         }
+
+        return array_merge($direct, $inherited);
     }
 
     /**
      * Returns all user IDs assigned to the role specified.
      *
-     * @param string $roleName
      *
      * @return (int|string)[] Array of user ID strings.
      *
@@ -324,52 +312,32 @@ final class Manager implements ManagerInterface
         return $result;
     }
 
-    /**
-     * @param Role $role
-     */
     public function addRole(Role $role): void
     {
         $this->addItem($role);
     }
 
-    /**
-     * @param Role $role
-     */
     public function removeRole(Role $role): void
     {
         $this->removeItem($role);
     }
 
-    /**
-     * @param string $name
-     * @param Role $role
-     */
     public function updateRole(string $name, Role $role): void
     {
         $this->checkItemNameForUpdate($role, $name);
         $this->storage->updateItem($name, $role);
     }
 
-    /**
-     * @param Permission $permission
-     */
     public function addPermission(Permission $permission): void
     {
         $this->addItem($permission);
     }
 
-    /**
-     * @param Permission $permission
-     */
     public function removePermission(Permission $permission): void
     {
         $this->removeItem($permission);
     }
 
-    /**
-     * @param string $name
-     * @param Permission $permission
-     */
     public function updatePermission(string $name, Permission $permission): void
     {
         $this->checkItemNameForUpdate($permission, $name);
@@ -390,6 +358,7 @@ final class Manager implements ManagerInterface
     {
         if (is_array($roles)) {
             $this->defaultRoles = $roles;
+
             return $this;
         }
 
@@ -400,6 +369,7 @@ final class Manager implements ManagerInterface
                 throw new RuntimeException('Default roles closure must return an array.');
             }
             $this->defaultRoles = $roles;
+
             return $this;
         }
 
@@ -456,6 +426,7 @@ final class Manager implements ManagerInterface
                 if ($item->getName() === $roleName) {
                     $result[] = $parentRole;
                     $this->getParentRolesRecursive($parentRole, $result);
+
                     break;
                 }
             }
@@ -552,7 +523,7 @@ final class Manager implements ManagerInterface
         string $user,
         string $itemName,
         array $params,
-        array $assignments
+        array $assignments,
     ): bool {
         $item = $this->storage->getItemByName($itemName);
         if ($item === null) {
@@ -568,7 +539,7 @@ final class Manager implements ManagerInterface
                 $user,
                 $parentName,
                 $params,
-                $assignments
+                $assignments,
             )) {
                 return true;
             }
@@ -630,7 +601,7 @@ final class Manager implements ManagerInterface
             $this->storage->getRoles(),
             static function (Role $roleItem) use ($array) {
                 return array_key_exists($roleItem->getName(), $array);
-            }
+            },
         );
     }
 
@@ -648,8 +619,8 @@ final class Manager implements ManagerInterface
         throw new InvalidArgumentException(
             sprintf(
                 'Unable to change the item name. The name "%s" is already used by another item.',
-                $item->getName()
-            )
+                $item->getName(),
+            ),
         );
     }
 }

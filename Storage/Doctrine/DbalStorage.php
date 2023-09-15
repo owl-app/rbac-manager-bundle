@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Owl\Bundle\RbacManagerBundle\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Owl\Bundle\RbacManagerBundle\Storage\StorageInterface;
-use Owl\Bundle\RbacManagerBundle\Types\Item;
-use Owl\Bundle\RbacManagerBundle\Types\Role;
-use Owl\Bundle\RbacManagerBundle\Types\Permission;
 use Owl\Bundle\RbacManagerBundle\Types\Assignment;
-use PDO;
-use Doctrine\DBAL\Driver;
+use Owl\Bundle\RbacManagerBundle\Types\Item;
+use Owl\Bundle\RbacManagerBundle\Types\Permission;
+use Owl\Bundle\RbacManagerBundle\Types\Role;
 
 final class DbalStorage implements StorageInterface
 {
@@ -35,7 +34,7 @@ final class DbalStorage implements StorageInterface
     private array $castAttributes = [
         'ruleName' => 'rule_name',
         'createdAt' => 'created_time',
-        'updatedAt' => 'updated_time'
+        'updatedAt' => 'updated_time',
     ];
 
     public function __construct(
@@ -43,11 +42,11 @@ final class DbalStorage implements StorageInterface
         string $itemTable = null,
         string $itemChildTable = null,
         string $assignmentTable = null,
-        string $ruleTable = null
+        string $ruleTable = null,
     ) {
         $this->connection = $connection;
-        $this->itemTable =  $itemTable ?? $this->itemTable;
-        $this->itemChildTable =  $itemChildTable ?? $this->itemChildTable;
+        $this->itemTable = $itemTable ?? $this->itemTable;
+        $this->itemChildTable = $itemChildTable ?? $this->itemChildTable;
         $this->assignmentTable = $assignmentTable ?? $this->assignmentTable;
         $this->ruleTable = $ruleTable ?? $this->ruleTable;
     }
@@ -77,7 +76,7 @@ final class DbalStorage implements StorageInterface
         foreach ($item->getAttributes() as $name => $value) {
             $queryBuilder->setValue(
                 $this->castAttributes[$name] ?? $name,
-                $queryBuilder->createNamedParameter($value)
+                $queryBuilder->createNamedParameter($value),
             );
         }
 
@@ -118,14 +117,13 @@ final class DbalStorage implements StorageInterface
 
         foreach ($item->getAttributes() as $name => $value) {
             $queryBuilder->set(
-                'i.'.($this->castAttributes[$name] ?? $name),
-                $queryBuilder->createNamedParameter($value)
+                'i.' . ($this->castAttributes[$name] ?? $name),
+                $queryBuilder->createNamedParameter($value),
             );
         }
 
         $queryBuilder->execute();
     }
-
 
     public function removeItem(Item $item): void
     {
@@ -137,8 +135,8 @@ final class DbalStorage implements StorageInterface
                 ->where(
                     $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq('parent', $parameterItemName),
-                        $queryBuilder->expr()->eq('child', $parameterItemName)
-                    )
+                        $queryBuilder->expr()->eq('child', $parameterItemName),
+                    ),
                 )
                 ->execute();
             $this->clearQueryBuilder($queryBuilder);
@@ -269,8 +267,8 @@ final class DbalStorage implements StorageInterface
                 $queryBuilder->expr()->in(
                     'type',
                     /** @psalm-suppress RedundantCast */
-                    $queryBuilder->createNamedParameter($types, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
-                )
+                    $queryBuilder->createNamedParameter($types, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY),
+                ),
             )
             ->execute();
 
@@ -341,9 +339,9 @@ final class DbalStorage implements StorageInterface
         $queryBuilder->resetQueryParts();
     }
 
-    public function getChildren():? array
+    public function getChildren(): ? array
     {
-        if (is_null($this->children)) {
+        if (null === $this->children) {
             $this->loadChildrens();
         }
 
@@ -388,7 +386,7 @@ final class DbalStorage implements StorageInterface
                 $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq('parent', $queryBuilder->createNamedParameter($parentData['id'])),
                     $queryBuilder->expr()->eq('child', $queryBuilder->createNamedParameter($childData['id'])),
-                )
+                ),
             )
             ->execute();
     }
@@ -404,7 +402,7 @@ final class DbalStorage implements StorageInterface
             ->where(
                 $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq('parent', $queryBuilder->createNamedParameter($parentData['id'])),
-                )
+                ),
             )
             ->execute();
     }
@@ -469,9 +467,9 @@ final class DbalStorage implements StorageInterface
                 ->leftJoin('at', $this->itemTable, 'ai', 'at.item_id = ai.id')
                 ->where(
                     $queryBuilder->expr()->eq(
-                    'user_id',
-                    $queryBuilder->createNamedParameter($userId)
-                )
+                        'user_id',
+                        $queryBuilder->createNamedParameter($userId),
+                    ),
                 )
                 ->execute();
 
@@ -524,8 +522,8 @@ final class DbalStorage implements StorageInterface
             ->where(
                 $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq('item_id', $queryBuilder->createNamedParameter($assigment->getItemId())),
-                    $queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId))
-                )
+                    $queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId)),
+                ),
             )
             ->execute();
 
@@ -540,8 +538,8 @@ final class DbalStorage implements StorageInterface
         $queryBuilder->delete($this->assignmentTable)
             ->where(
                 $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId))
-                )
+                    $queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId)),
+                ),
             )
             ->execute();
     }
