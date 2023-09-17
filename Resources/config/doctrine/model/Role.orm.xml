@@ -7,7 +7,7 @@
 
     <mapped-superclass name="Owl\Component\Rbac\Model\Role">
 
-        <many-to-many field="permissions" target-entity="Owl\Component\Rbac\Model\BaseAuthItem">
+        <many-to-many field="permissions" target-entity="Owl\Component\Rbac\Model\AuthItem">
             <join-table name="owl_auth_item_child">
                 <join-columns>
                     <join-column name="parent" referenced-column-name="id" />
