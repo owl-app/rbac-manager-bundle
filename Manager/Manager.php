@@ -407,10 +407,10 @@ final class Manager implements ManagerInterface
     {
         $time = time();
         if (!$item->hasCreatedTime()) {
-            $item = $item->withUpdatedTime((string) $time);
+            $item = $item->withUpdatedTime(date('Y-m-d H:i:s'));
         }
         if (!$item->hasUpdatedTime()) {
-            $item = $item->withUpdatedTime((string) $time);
+            $item = $item->withUpdatedTime(date('Y-m-d H:i:s'));
         }
 
         $this->storage->addItem($item);
@@ -496,6 +496,11 @@ final class Manager implements ManagerInterface
         }
 
         return $this->normalizePermissions($result);
+    }
+
+    public function clearLoadedItems(): void
+    {
+        $this->storage->clearLoadedItems();
     }
 
     private function removeItem(Item $item): void

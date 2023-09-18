@@ -110,7 +110,7 @@ abstract class Item
     /**
      * @return (string|null)[]
      *
-     * @psalm-return array{name: string, description: string, type: string, updated_time: null|string, created_time: null|string}
+     * @psalm-return array{name: string, description: string, type: string, updated_at: null|string, created_at: null|string}
      */
     public function getAttributes(): array
     {
@@ -118,8 +118,8 @@ abstract class Item
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'type' => $this->getType(),
-            'updated_time' => $this->getUpdatedTime(),
-            'created_time' => $this->getCreatedTime(),
+            'updated_at' => $this->getUpdatedTime(),
+            'created_at' => $this->getCreatedTime(),
         ];
     }
 }

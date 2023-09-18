@@ -56,4 +56,6 @@ interface StorageInterface
     public function removeAssignment(int $userId, Assignment $assigment): void;
 
     public function removeAllAssignments(int $userId): void;
+
+    public function clearLoadedItems(): void;
 }

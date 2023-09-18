@@ -81,6 +81,13 @@ final class DbalStorage implements StorageInterface
         }
 
         $queryBuilder->execute();
+
+        $this->itemsLoaded[$item->getType()][$item->getName()] = array_merge(
+            [
+                'id' => $this->connection->lastInsertId()
+            ], 
+            $item->getAttributes()
+        );
     }
 
     public function updateItem(string $name, Item $item): void
@@ -542,5 +549,10 @@ final class DbalStorage implements StorageInterface
                 ),
             )
             ->execute();
+    }
+
+    public function clearLoadedItems(): void
+    {
+        $this->itemsLoaded = [];
     }
 }
