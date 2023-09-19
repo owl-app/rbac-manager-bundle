@@ -84,9 +84,9 @@ final class DbalStorage implements StorageInterface
 
         $this->itemsLoaded[$item->getType()][$item->getName()] = array_merge(
             [
-                'id' => $this->connection->lastInsertId()
-            ], 
-            $item->getAttributes()
+                'id' => $this->connection->lastInsertId(),
+            ],
+            $item->getAttributes(),
         );
     }
 
