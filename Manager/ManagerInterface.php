@@ -13,6 +13,8 @@ interface ManagerInterface
 
     public function revoke(Item $item, int $userId): void;
 
+    public function addChild(Item $parent, Item $child): void;
+
     public function getRolesByUser(int $userId): array;
 
     public function getPermissionsByUser(int $userId, bool $group = false): array;
